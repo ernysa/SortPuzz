@@ -2,30 +2,21 @@
 #include <stack>
 #include <string>
 using namespace std;
-class bottle
-{
-    public:
-        //attributes
-        int bottleHeight;
-        stack<string> balls;
 
-        //methods
-        int pourOut(){};
-        void fill(){};
-};
-class grid
+class Puzzle
 {
-    public:
-        //attributes
-        vector<bottle> bottles;
-        int numberOfStacks;
-        int stackHeight;
+public:
+    // attributes
+    vector<stack<string>> grid;
+    int numberOfStacks;
+    int stackHeight;
 
-        //methods
-        int getStackHeight(){};
-        bool isValidMove(){};
-        string gridConvertedtoString(){};
-        bool isSolved(){};
-        bool solvePuzzle(){};
-        bool isGridValid(){};
+    // methods
+    int getStackHeight(){};                                           // mahmut sedat
+    bool isValidMove(){};                                             // ortak
+    string gridConvertedtoString(){};                                 // mahmut sedat
+    bool isSolved(){};                                                // mahmut sedat
+    void transferTo(stack<string> source, stack<string> destination); // mahmut sedat
+    bool solvePuzzle(){};                                             // ortak
+    bool isGridValid(){};                                             // eren
 };
