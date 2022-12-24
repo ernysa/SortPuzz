@@ -21,5 +21,5 @@ public:
     bool isSolved(){};                                                // mahmut sedat
     void transferTo(stack<string> source, stack<string> destination){}; // mahmut sedat
     bool solvePuzzle(){};                                             // ortak
-    bool isGridValid(){};                                             // eren
+    bool isGridValid();                                             // eren
 };
