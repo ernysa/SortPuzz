@@ -57,9 +57,9 @@ int main(int argc, char* argv[]){
             getline(file,line, ' ');
             bottle.push(line);
         }
-            getline(file,line, '\r');
-            bottle.push(line);
             getline(file,line, '\n');
+            bottle.push(line);
+            
 
             //for empty bottle 
             if(bottle.top() == "_"){
