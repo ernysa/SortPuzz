@@ -3,7 +3,7 @@
 #include<fstream>	
 #include<string>
 #include<stdlib.h> 
-//#include "header.h"
+#include "header.h"
 
 using namespace std;
 
@@ -36,6 +36,39 @@ int main(int argc, char* argv[]){
     while(!file.eof()){
         getline(file,line, '\n');
         numberOfBottle++;
+    }
+
+    //return to the begining of txt file
+    file.clear();
+    file.seekg(0);
+
+    
+    Puzzle game;
+    game.numberOfStacks = numberOfBottle;
+    game.stackHeight = heightOfBottle;
+
+    //fill every bottle
+    for(int i=0 ; i<numberOfBottle ; i++){
+        stack<string> bottle;
+
+        //fill every color
+        for (int j = 0; j < heightOfBottle-1 ; j++)
+        {   
+            getline(file,line, ' ');
+            bottle.push(line);
+        }
+            getline(file,line, '\r');
+            bottle.push(line);
+            getline(file,line, '\n');
+
+            //for empty bottle 
+            if(bottle.top() == "_"){
+                for (int j = 0; j < heightOfBottle ; j++){
+                    bottle.pop();
+                }
+            }
+            //add bottle to grid
+            game.addBottle(bottle);       
     }
     return 0;
 }
