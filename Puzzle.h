@@ -16,16 +16,15 @@ public:
 
   // methods
   void addBottle(stack<string> bottle);
-  bool isValidMove();                                               // ortak
-  string gridConvertedtoString();                                   // mahmut sedat
-  bool isSolved();                                                  // mahmut sedat
-  void transferTo(stack<string> source, stack<string> destination); // mahmut sedat
-  bool solvePuzzle();                                               // ortak
-  bool isGridValid();                                               // eren
+  bool isValidMove();                                                 // ortak
+  string gridConvertedtoString();                                     // mahmut sedat
+  bool isSolved();                                                    // mahmut sedat
+  void transferTo(stack<string> &source, stack<string> &destination); // mahmut sedat
+  bool solvePuzzle();                                                 // ortak
+  bool isGridValid();                                                 // eren
 };
 
 #endif // SORTPUZZ_PUZZLE_H
 #include <vector>
 #include <stack>
 #include <string>
-

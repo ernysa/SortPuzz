@@ -5,7 +5,7 @@ void Puzzle::addBottle(stack<string> bottle)
   this->grid.push_back(bottle);
 }
 
-void Puzzle::transferTo(stack<string> source, stack<string> destination)
+void Puzzle::transferTo(stack<string> &source, stack<string> &destination)
 {
   int bottleSize = this->stackHeight;
 
