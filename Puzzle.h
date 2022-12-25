@@ -1,6 +1,8 @@
 #include <vector>
 #include <stack>
 #include <string>
+#include <map>
+#include <iterator>
 
 using namespace std;
 #ifndef SORTPUZZ_PUZZLE_H
@@ -25,6 +27,3 @@ public:
 };
 
 #endif // SORTPUZZ_PUZZLE_H
-#include <vector>
-#include <stack>
-#include <string>

@@ -75,5 +75,6 @@ int main(int argc, char *argv[])
         // add bottle to grid
         game.addBottle(bottle);
     }
+    game.isGridValid();
     return 0;
 }

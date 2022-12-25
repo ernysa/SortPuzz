@@ -1,4 +1,7 @@
 #include "Puzzle.h"
+#include <iostream>
+
+using namespace std;
 
 void Puzzle::addBottle(stack<string> bottle)
 {
@@ -67,4 +70,46 @@ void Puzzle::transferTo(stack<string> &source, stack<string> &destination)
     }
     toBeMoved.pop();
   }
+}
+
+// todo: arrange the cpp files later.
+bool Puzzle::isGridValid()
+{
+  int expectedNumberOfBalls = (this->numberOfStacks - 2) * (this->stackHeight);
+  int numberOfBalls = 0;
+
+  // count the total number of balls
+  for (auto i : grid)
+  {
+    numberOfBalls += i.size();
+  }
+  if (numberOfBalls != expectedNumberOfBalls)
+  {
+    cout << "Number of balls isn't what it should be!" << endl;
+    return false;
+  }
+  // count the number of each different colored ball
+  map<string, int> balls;
+  vector<stack<string>> newGrid = grid;
+  for (auto tube : newGrid)
+  {
+    while (!tube.empty())
+    {
+      string key = tube.top();
+      tube.pop();
+      balls[key] += 1;
+    }
+  }
+  // checking if the grid has the right amount of ball of each color
+  map<string, int>::iterator it = balls.begin();
+  while (it != balls.end())
+  {
+    if (it->second != stackHeight)
+    {
+      cout << "There aren't " << stackHeight << " balls of color " << it->first << endl;
+      return false;
+    }
+    it++;
+  }
+  return true;
 }
