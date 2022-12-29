@@ -75,6 +75,20 @@ int main(int argc, char *argv[])
         // add bottle to grid
         game.addBottle(bottle);
     }
+<<<<<<< Updated upstream
     game.isGridValid();
+=======
+    game.solvePuzzle(game.grid);
+
+    reverse(game.answerMod.begin(), game.answerMod.end());
+
+    for (auto v : game.answerMod)
+    {
+        cout << "Move " << v[0] + 1
+             << " to " << v[1] + 1
+             << " " << v[2] << " times"
+             << endl;
+    }
+>>>>>>> Stashed changes
     return 0;
 }

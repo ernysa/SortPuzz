@@ -8,9 +8,9 @@ void Puzzle::addBottle(stack<string> bottle)
   this->grid.push_back(bottle);
 }
 
-bool Puzzle::isSolved()
+bool Puzzle::isSolved(vector<stack<string>> grid)
 {
-  for (auto stack : this->grid)
+  for (auto stack : grid)
   {
     vector<string> colors;
     while (!stack.empty())
@@ -28,10 +28,10 @@ bool Puzzle::isSolved()
   return true;
 }
 
-string Puzzle::convertGridToString()
+string Puzzle::convertGridToString(vector<stack<string>> grid)
 {
   string finalString;
-  for (auto stack : this->grid)
+  for (auto stack : grid)
   {
     string colors;
     while (!stack.empty())
@@ -53,7 +53,7 @@ void Puzzle::transferTo(stack<string> &source, stack<string> &destination)
   toBeMoved.push(first);
   source.pop();
 
-  while (toBeMoved.top() == source.top())
+  while (!source.empty() && toBeMoved.top() == source.top())
   {
     toBeMoved.push(source.top());
     source.pop();
@@ -113,3 +113,88 @@ bool Puzzle::isGridValid()
   }
   return true;
 }
+<<<<<<< Updated upstream
+=======
+
+bool Puzzle::isValidMove(stack<string> sourceStack, stack<string> destinationStack)
+{
+  if (sourceStack.size() == 0 || destinationStack.size() == this->stackHeight)
+    return false;
+  stack<string> comparisonStack = sourceStack;
+  string topColor = comparisonStack.top();
+  int ballsOfSameColor = 0;
+  for (int i = 0; i < comparisonStack.size(); i++)
+  { // finds the number of same colored balls in the source stack
+    if (comparisonStack.top() == topColor)
+    {
+      ballsOfSameColor++;
+    }
+    comparisonStack.pop();
+  }
+  if (ballsOfSameColor == this->stackHeight) // if all of the balls are same colored in the source stack
+    return false;                            // don't touch it
+
+  if (destinationStack.size() == 0)
+  {
+    if (ballsOfSameColor == sourceStack.size()) // destination stack is empty but source stack
+      return false;                             // has only same colored balls, don't touch it
+    return true;
+  }
+
+  return sourceStack.top() == destinationStack.top();
+}
+
+bool Puzzle::solvePuzzle(vector<stack<string>> gridd)
+{
+
+  visited.insert(convertGridToString(gridd));
+
+  for (int i = 0; i < gridd.size(); i++)
+  {
+
+    // Iterate over all the stacks
+    stack<string> sourceStack = gridd[i];
+    for (int j = 0; j < gridd.size(); j++)
+    {
+      if (i == j)
+        continue;
+      stack<string> destinationStack = gridd[j];
+      if (isValidMove(sourceStack,
+                      destinationStack))
+      {
+
+        // Creating a new Grid
+        // with the valid move
+        vector<stack<string>> newGrid(gridd);
+
+        transferTo(newGrid[i], newGrid[j]);
+
+        if (isSolved(newGrid))
+        {
+          answerMod.push_back(
+              vector<int>{i, j, 1});
+          return true;
+        }
+        if (visited.find(convertGridToString(newGrid)) == visited.end())
+        {
+          bool solveForTheRest = solvePuzzle(newGrid);
+          if (solveForTheRest)
+          {
+            vector<int> lastMove = answerMod[answerMod.size() - 1];
+
+            // Optimisation - Concatenating
+            // consecutive moves of the same
+            // ball
+            if (lastMove[0] == i && lastMove[1] == j)
+              answerMod[answerMod.size() - 1][2]++;
+            else
+              answerMod.push_back(vector<int>{i, j, 1});
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+>>>>>>> Stashed changes
