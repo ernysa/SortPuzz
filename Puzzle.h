@@ -18,7 +18,7 @@ public:
 
   // methods
   void addBottle(stack<string> bottle);
-  bool isValidMove();                                                 // ortak
+  bool isValidMove(stack <string>, stack <string>);                   // ortak
   string convertGridToString();                                       // mahmut sedat
   bool isSolved();                                                    // mahmut sedat
   void transferTo(stack<string> &source, stack<string> &destination); // mahmut sedat

@@ -76,5 +76,6 @@ int main(int argc, char *argv[])
         game.addBottle(bottle);
     }
     game.isGridValid();
+    game.isValidMove(game.grid[3],game.grid[4]); //for testing purposes
     return 0;
 }
