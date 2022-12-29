@@ -75,7 +75,16 @@ int main(int argc, char *argv[])
         // add bottle to grid
         game.addBottle(bottle);
     }
-    game.isGridValid();
-    game.isValidMove(game.grid[3],game.grid[4]); //for testing purposes
+    game.solvePuzzle(game.grid);
+
+    reverse(game.answerMod.begin(), game.answerMod.end());
+
+    for (auto v : game.answerMod)
+    {
+        cout << "Move " << v[0] + 1
+             << " to " << v[1] + 1
+             << " " << v[2] << " times"
+             << endl;
+    }
     return 0;
 }
