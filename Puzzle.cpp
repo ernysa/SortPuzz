@@ -1,6 +1,7 @@
 #include "Puzzle.h"
 #include <iostream>
-
+#include <bits/stdc++.h>
+#include <iterator>
 using namespace std;
 
 void Puzzle::addBottle(stack<string> bottle)
@@ -112,4 +113,27 @@ bool Puzzle::isGridValid()
     it++;
   }
   return true;
+}
+
+bool Puzzle::isValidMove(stack <string> sourceStack, stack <string> destinationStack){
+  if (sourceStack.size() == 0 || destinationStack.size() == this->stackHeight)
+    return false;
+  stack <string> comparisonStack = sourceStack;
+  string topColor = comparisonStack.top();
+  int ballsOfSameColor = 0;
+  for(int i= 0; i < comparisonStack.size();i++){  //finds the number of same colored balls in the source stack
+    if (comparisonStack.top() == topColor){
+      ballsOfSameColor++;
+    }
+  }
+  if(ballsOfSameColor == this->stackHeight) //if all of the balls are same colored in the source stack
+    return false;                           //don't touch it
+
+  if (destinationStack.size() == 0){
+    if(ballsOfSameColor == sourceStack.size())  //destination stack is empty but source stack
+      return false;                             //has only same colored balls, don't touch it
+    return true;
+  }
+  
+  return sourceStack.top() == destinationStack.top();
 }
