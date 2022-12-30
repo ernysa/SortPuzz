@@ -6,12 +6,12 @@ using namespace std;
 
 void Puzzle::addBottle(stack<string> bottle)
 {
-  this->grid.push_back(bottle);
+  this->initGrid.push_back(bottle);
 }
 
-bool Puzzle::isSolved()
+bool Puzzle::isSolved(vector<stack<string>> grid)
 {
-  for (auto stack : this->grid)
+  for (auto stack : grid)
   {
     vector<string> colors;
     while (!stack.empty())
@@ -29,10 +29,12 @@ bool Puzzle::isSolved()
   return true;
 }
 
-string Puzzle::convertGridToString()
+string Puzzle::convertGridToString(vector<stack<string>> grid)
 {
   string finalString;
-  for (auto stack : this->grid)
+  sort(grid.begin(), grid.end());
+
+  for (auto stack : grid)
   {
     string colors;
     while (!stack.empty())
@@ -54,7 +56,7 @@ void Puzzle::transferTo(stack<string> &source, stack<string> &destination)
   toBeMoved.push(first);
   source.pop();
 
-  while (toBeMoved.top() == source.top())
+  while (!source.empty() && toBeMoved.top() == source.top())
   {
     toBeMoved.push(source.top());
     source.pop();
@@ -80,7 +82,7 @@ bool Puzzle::isGridValid()
   int numberOfBalls = 0;
 
   // count the total number of balls
-  for (auto i : grid)
+  for (auto i : initGrid)
   {
     numberOfBalls += i.size();
   }
@@ -91,7 +93,7 @@ bool Puzzle::isGridValid()
   }
   // count the number of each different colored ball
   map<string, int> balls;
-  vector<stack<string>> newGrid = grid;
+  vector<stack<string>> newGrid = initGrid;
   for (auto tube : newGrid)
   {
     while (!tube.empty())
@@ -115,25 +117,88 @@ bool Puzzle::isGridValid()
   return true;
 }
 
-bool Puzzle::isValidMove(stack <string> sourceStack, stack <string> destinationStack){
+bool Puzzle::isValidMove(stack<string> sourceStack, stack<string> destinationStack)
+{
   if (sourceStack.size() == 0 || destinationStack.size() == this->stackHeight)
     return false;
-  stack <string> comparisonStack = sourceStack;
+  stack<string> comparisonStack = sourceStack;
   string topColor = comparisonStack.top();
   int ballsOfSameColor = 0;
-  for(int i= 0; i < comparisonStack.size();i++){  //finds the number of same colored balls in the source stack
-    if (comparisonStack.top() == topColor){
+  for (int i = 0; i < comparisonStack.size(); i++)
+  { // finds the number of same colored balls in the source stack
+    if (comparisonStack.top() == topColor)
+    {
       ballsOfSameColor++;
     }
+    comparisonStack.pop();
   }
-  if(ballsOfSameColor == this->stackHeight) //if all of the balls are same colored in the source stack
-    return false;                           //don't touch it
+  if (ballsOfSameColor == this->stackHeight) // if all of the balls are same colored in the source stack
+    return false;                            // don't touch it
 
-  if (destinationStack.size() == 0){
-    if(ballsOfSameColor == sourceStack.size())  //destination stack is empty but source stack
-      return false;                             //has only same colored balls, don't touch it
+  if (destinationStack.size() == 0)
+  {
+    if (ballsOfSameColor == sourceStack.size()) // destination stack is empty but source stack
+      return false;                             // has only same colored balls, don't touch it
     return true;
   }
-  
+
   return sourceStack.top() == destinationStack.top();
+}
+
+bool Puzzle::solvePuzzle(vector<stack<string>> grid)
+{
+
+  visited.insert(convertGridToString(grid));
+
+  for (int i = 0; i < grid.size(); i++)
+  {
+
+    // tüm şişelerde gezinmek için
+    stack<string> sourceStack = grid[i];
+
+    for (int j = 0; j < grid.size(); j++)
+    {
+      if (i == j)
+        continue;
+      stack<string> destinationStack = grid[j];
+      if (isValidMove(sourceStack,
+                      destinationStack))
+      {
+
+        // yeni geçerli hareketi yapmak için yeni grid oluşturuyoruz
+        vector<stack<string>> newGrid(grid);
+
+        transferTo(newGrid[i], newGrid[j]); // hareketi gerçekleştiriyoruz
+
+        if (isSolved(newGrid))
+        {
+          // eğer yeni grid çözülmüş haldeyse son adımı cevap moduna ekleyip fonksiyonu sonlandırıyoruz.
+          answerMod.push_back(
+              vector<int>{i, j});
+          return true;
+        }
+        if (visited.find(convertGridToString(newGrid)) == visited.end())
+        {                                              // eğer yeni grid visitedta yok ise
+          bool solveForTheRest = solvePuzzle(newGrid); // tekrar bu adım üzerinden fonksiyonu çağırıyoruz
+          if (solveForTheRest)
+          {
+            answerMod.push_back(vector<int>{i, j});
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+void Puzzle::printAnswer()
+{
+  reverse(answerMod.begin(), answerMod.end());
+  for (auto v : answerMod)
+  {
+    cout << "Move " << v[0] + 1
+         << " to " << v[1] + 1
+         << endl;
+  }
 }
