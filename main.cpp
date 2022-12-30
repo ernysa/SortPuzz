@@ -75,7 +75,27 @@ int main(int argc, char *argv[])
         // add bottle to grid
         game.addBottle(bottle);
     }
-    game.isGridValid();
-    game.isValidMove(game.grid[3],game.grid[4]); //for testing purposes
+
+    if (!game.isGridValid())
+    {
+        cout << "Invalid Grid" << endl;
+        return 1;
+    }
+    try
+    {
+        bool isSolved = game.solvePuzzle(game.initGrid);
+        if (isSolved)
+        {
+            game.printAnswer();
+        }
+        else
+        {
+            throw(isSolved);
+        }
+    }
+    catch (bool isSolved)
+    {
+        cout << "Can't find a solution";
+    }
     return 0;
 }
